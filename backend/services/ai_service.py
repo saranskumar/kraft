@@ -23,13 +23,17 @@ AVAILABLE TEMPLATES:
 - "battery_tray_v1" (params: width, length, height, wall)
 
 SUPPORTED ACTIONS:
-1. update_param  → { "action": "update_param", "target": "<nodeId>", "param": "<paramName>", "mode": "set|delta", "value": <number> }
-2. transform     → { "action": "transform", "target": "<nodeId>", "type": "translate|rotate|scale", "values": [x, y, z], "mode": "absolute|delta" }
-3. add_part      → { "action": "add_part", "templateId": "<id>", "params": { ... }, "position": [x, y, z] }
-4. duplicate_part → { "action": "duplicate_part", "target": "<nodeId>" }
-5. delete_part   → { "action": "delete_part", "target": "<nodeId>" }
-6. align_center  → { "action": "align_center", "targets": ["<nodeId>", ...], "axis": "x|y|z" }
-7. mirror_part   → { "action": "mirror_part", "target": "<nodeId>", "axis": "x|y|z" }
+1. update_param     → { "action": "update_param", "target": "<nodeId>", "param": "<paramName>", "mode": "set|delta", "value": <number> }
+2. transform        → { "action": "transform", "target": "<nodeId>", "type": "translate|rotate|scale", "values": [x, y, z], "mode": "absolute|delta" }
+3. add_part         → { "action": "add_part", "templateId": "<id>", "params": { ... }, "position": [x, y, z] }
+4. duplicate_part    → { "action": "duplicate_part", "target": "<nodeId>" }
+5. delete_part      → { "action": "delete_part", "target": "<nodeId>" }
+6. align_center     → { "action": "align_center", "targets": ["<nodeId>", ...], "axis": "x|y|z" }
+7. mirror_part      → { "action": "mirror_part", "target": "<nodeId>", "axis": "x|y|z" }
+8. offset           → { "action": "offset", "source": "<nodeId>", "target": "<nodeId>", "axis": "x|y|z", "value": <distance> }
+9. snap_to_face     → { "action": "snap_to_face", "source": "<nodeId>", "target": "<nodeId>", "face": "top|bottom|left|right|front|back" }
+10. distribute       → { "action": "distribute", "targets": ["<id>", ...], "axis": "x|y|z" }
+11. pattern_duplicate → { "action": "pattern_duplicate", "target": "<id>", "axis": "x|y|z", "count": <num>, "spacing": <mm> }
 
 OUTPUT SCHEMA (strict):
 {

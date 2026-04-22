@@ -19,6 +19,15 @@
 - [x] **STL Import**: Support for static meshes.
 - [x] **STL Export**: Multi-part assembly export via OpenSCAD.
 
-## 🛠️ Workspace
+## 🛠️ Assembly Tools
+- [x] **Alignment**: Axis-based part alignment.
+- [x] **Face Snapping**: Precise part mating based on bounding boxes.
+- [x] **Distribution**: Even spacing across axes.
+- [x] **Mirroring**: Symmetrical part placement.
+- [x] **Pattern Duplicate**: Array-based part replication.
+
+## 🎨 Workspace & Theme
 - [x] **Resizable Layout**: Multi-dock system.
+- [x] **Default Light Theme**: Premium, professional aesthetic.
+- [x] **Deep Slate Dark Mode**: High-contrast, easy-on-the-eyes theme.
 - [x] **Memory Management**: Persistence via `.agent/` and `.project/`.
