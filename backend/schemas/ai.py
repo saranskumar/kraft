@@ -5,6 +5,7 @@ class AICommandRequest(BaseModel):
     prompt: str
     scene: Dict[str, Any]
     selection: List[str]
+    history: Optional[List[Dict[str, str]]] = None
 
 class AICommand(BaseModel):
     action: str

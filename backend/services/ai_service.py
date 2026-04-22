@@ -41,7 +41,7 @@ OUTPUT SCHEMA (strict):
 }
 """
 
-def generate_commands(prompt: str, scene: Dict[str, Any], selection: List[str]) -> List[Dict[str, Any]]:
+def generate_commands(prompt: str, scene: Dict[str, Any], selection: List[str], history: List[Dict[str, str]] = None) -> List[Dict[str, Any]]:
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise ValueError("GEMINI_API_KEY is not set in environment")
@@ -49,8 +49,12 @@ def generate_commands(prompt: str, scene: Dict[str, Any], selection: List[str]) 
     # Initialize the new Gemini 3 Client
     client = genai.Client(api_key=api_key)
 
+    history_str = ""
+    if history:
+        history_str = "Recent Chat History:\n" + "\n".join([f"- {m['role']}: {m['content']}" for m in history[-10:]]) + "\n\n"
+
     user_message = f"""
-Scene (JSON):
+{history_str}Scene (JSON):
 {json.dumps(scene, indent=2)}
 
 Current selection (node IDs):
