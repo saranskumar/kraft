@@ -1,0 +1,33 @@
+[
+  {
+    "id": "chassis_plate_v1",
+    "name": "Chassis Plate",
+    "category": "robotics",
+    "params": {
+      "length": 200,
+      "width": 160,
+      "thickness": 3
+    }
+  },
+  {
+    "id": "motor_mount_n20_v1",
+    "name": "N20 Motor Mount",
+    "category": "robotics",
+    "params": {
+      "mount_width": 12,
+      "mount_length": 20,
+      "thickness": 3
+    }
+  },
+  {
+    "id": "battery_tray_v1",
+    "name": "Battery Tray",
+    "category": "robotics",
+    "params": {
+      "length": 70,
+      "width": 22,
+      "height": 20,
+      "wall": 2
+    }
+  }
+]
