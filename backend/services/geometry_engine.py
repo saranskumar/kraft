@@ -17,10 +17,11 @@ def generate_stl(scene: ExportRequest) -> str:
     
     scad_path.write_text(scad_code)
     
-    # Run OpenSCAD (ensure openscad is in PATH)
+    # Run OpenSCAD
+    openscad_path = os.getenv("OPENSCAD_PATH", "openscad")
     try:
         subprocess.run(
-            ["openscad", "-o", str(stl_path), str(scad_path)],
+            [openscad_path, "-o", str(stl_path), str(scad_path)],
             check=True, timeout=30
         )
     except Exception as e:

@@ -1,0 +1,29 @@
+# Node
+node_modules/
+.next/
+out/
+build/
+.pnpm-debug.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.venv
+env/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Memory (Rule 98)
+.agent/
+.agents/
+.project/
+
+# Local data
+backend/exports/*.stl
+backend/temp/
