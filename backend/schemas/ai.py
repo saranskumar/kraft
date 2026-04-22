@@ -6,6 +6,8 @@ class AICommandRequest(BaseModel):
     scene: Dict[str, Any]
     selection: List[str]
     history: Optional[List[Dict[str, str]]] = None
+    scene_summary: Optional[Dict[str, Any]] = None
+    hints: Optional[List[Dict[str, Any]]] = None
 
 class AICommand(BaseModel):
     action: str

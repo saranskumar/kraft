@@ -11,7 +11,9 @@ async def get_ai_command(request: AICommandRequest):
             request.prompt, 
             request.scene, 
             request.selection,
-            request.history
+            request.history,
+            request.scene_summary,
+            request.hints
         )
         return {"commands": commands}
     except Exception as e:

@@ -11,9 +11,11 @@ RULES:
 - ONLY return valid JSON matching the output schema below.
 - DO NOT add explanations, comments, or markdown.
 - DO NOT generate geometry descriptions.
-- Use ONLY the node IDs and part IDs present in the provided scene.
+- Use ONLY the node IDs and part IDs present in the provided scene or scene_summary.
+- Use the "label" field from scene_summary to identify objects if the user uses descriptive names.
+- Prefer the "hints" provided for resolving conversational references (this, it, left, etc).
 - If "selection" is non-empty, target those nodes first.
-- If "selection" is empty, apply to all nodes or pick the most appropriate one.
+- If multiple objects match a description and confidence is low, return an empty "commands" list.
 
 COORDINATE SYSTEM: Three.js (Y-up). Units are millimetres.
 
@@ -41,7 +43,14 @@ OUTPUT SCHEMA (strict):
 }
 """
 
-def generate_commands(prompt: str, scene: Dict[str, Any], selection: List[str], history: List[Dict[str, str]] = None) -> List[Dict[str, Any]]:
+def generate_commands(
+    prompt: str, 
+    scene: Dict[str, Any], 
+    selection: List[str], 
+    history: List[Dict[str, str]] = None,
+    scene_summary: Dict[str, Any] = None,
+    hints: List[Dict[str, Any]] = None
+) -> List[Dict[str, Any]]:
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise ValueError("GEMINI_API_KEY is not set in environment")
@@ -53,8 +62,16 @@ def generate_commands(prompt: str, scene: Dict[str, Any], selection: List[str], 
     if history:
         history_str = "Recent Chat History:\n" + "\n".join([f"- {m['role']}: {m['content']}" for m in history[-10:]]) + "\n\n"
 
+    summary_str = ""
+    if scene_summary:
+        summary_str = "Semantic Scene Summary:\n" + json.dumps(scene_summary, indent=2) + "\n\n"
+    
+    hints_str = ""
+    if hints:
+        hints_str = "Reference Resolution Hints (Pre-processed by Resolver):\n" + json.dumps(hints, indent=2) + "\n\n"
+
     user_message = f"""
-{history_str}Scene (JSON):
+{history_str}{summary_str}{hints_str}Scene (Raw JSON):
 {json.dumps(scene, indent=2)}
 
 Current selection (node IDs):

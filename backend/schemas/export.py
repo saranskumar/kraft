@@ -3,9 +3,12 @@ from typing import Dict, List, Optional, Any
 
 class Part(BaseModel):
     id: str
-    type: str
-    templateId: str
-    params: Dict[str, Any]
+    kind: str # "parametric" or "imported"
+    templateId: Optional[str] = None
+    params: Optional[Dict[str, Any]] = None
+    fileName: Optional[str] = None
+    sourceType: Optional[str] = None
+    sourceUrl: Optional[str] = None
     material: Optional[str] = None
     visible: bool = True
     locked: bool = False
@@ -24,3 +27,6 @@ class SceneNode(BaseModel):
 class ExportRequest(BaseModel):
     parts: Dict[str, Part]
     sceneNodes: Dict[str, SceneNode]
+    format: Optional[str] = "stl"
+    exportMode: Optional[str] = "full" # "parametric" | "full"
+    projectId: Optional[str] = None

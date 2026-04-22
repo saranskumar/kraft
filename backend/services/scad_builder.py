@@ -25,23 +25,28 @@ def build_scad_from_scene(scene: ExportRequest) -> str:
         lines.append(f"  scale([{scale[0]}, {scale[2]}, {scale[1]}])")
         lines.append("  {")
         
-        params = part.params
-        if part.templateId == "chassis_plate_v1":
-            l, w, h = params.get("length", 200), params.get("width", 160), params.get("thickness", 3)
-            lines.append(f"    cube([{l}, {w}, {h}], center=true);")
-            
-        elif part.templateId == "motor_mount_n20_v1":
-            mw, ml, h = params.get("mount_width", 12), params.get("mount_length", 20), params.get("thickness", 3)
-            lines.append(f"    cube([{mw}, {ml}, {h}], center=true);")
-            lines.append(f"    translate([{mw/2}, 0, {ml/4}]) cube([1, {ml}, {ml/2}], center=true);")
-            lines.append(f"    translate([{-mw/2}, 0, {ml/4}]) cube([1, {ml}, {ml/2}], center=true);")
-            
-        elif part.templateId == "battery_tray_v1":
-            l, w, h, wall = params.get("length", 70), params.get("width", 22), params.get("height", 20), params.get("wall", 2)
-            lines.append("    difference() {")
-            lines.append(f"      cube([{w}, {l}, {h}], center=true);")
-            lines.append(f"      translate([0, 0, {wall}]) cube([{w - wall*2}, {l - wall*2}, {h}], center=true);")
-            lines.append("    }")
+        params = part.params or {}
+        if part.kind == "parametric":
+            if part.templateId == "chassis_plate_v1":
+                l, w, h = params.get("length", 200), params.get("width", 160), params.get("thickness", 3)
+                lines.append(f"    cube([{l}, {w}, {h}], center=true);")
+                
+            elif part.templateId == "motor_mount_n20_v1":
+                mw, ml, h = params.get("mount_width", 12), params.get("mount_length", 20), params.get("thickness", 3)
+                lines.append(f"    cube([{mw}, {ml}, {h}], center=true);")
+                lines.append(f"    translate([{mw/2}, 0, {ml/4}]) cube([1, {ml}, {ml/2}], center=true);")
+                lines.append(f"    translate([{-mw/2}, 0, {ml/4}]) cube([1, {ml}, {ml/2}], center=true);")
+                
+            elif part.templateId == "battery_tray_v1":
+                l, w, h, wall = params.get("length", 70), params.get("width", 22), params.get("height", 20), params.get("wall", 2)
+                lines.append("    difference() {")
+                lines.append(f"      cube([{w}, {l}, {h}], center=true);")
+                lines.append(f"      translate([0, 0, {wall}]) cube([{w - wall*2}, {l - wall*2}, {h}], center=true);")
+                lines.append("    }")
+        elif part.kind == "imported" and part.fileName:
+            # Note: This assumes the file is accessible to OpenSCAD
+            # In a production app, we'd need to resolve the path correctly
+            lines.append(f'    import("{part.fileName}");')
         
         lines.append("  }")
         lines.append("}")

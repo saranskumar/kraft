@@ -1,21 +1,21 @@
-# Architectural Decisions
+# Architectural Decisions: Kraft CAD v2
 
-## ADR 001: Multi-Panel Workspace Layout
-- **Context**: The editor needed to transition from a prototype to a professional CAD tool.
-- **Decision**: Adopted a VS Code-inspired layout with resizable sidebars and a bottom panel.
-- **Consequences**: Improved workspace utility, allowed for parallel viewing of properties and chat history.
+## ADR-001: Trimesh for Geometry Merging
+**Decision**: Use `trimesh` (Python) for the unified export pipeline.
+**Rationale**: Handles heterogeneous mesh formats (STL, OBJ, 3MF) and provides robust matrix-based transformations for assembly alignment.
 
-## ADR 002: Local Workspace Memory (Rule 98)
-- **Context**: Project context was previously stored in system app data, making it hard to share or persist with the repo.
-- **Decision**: Migrated all artifacts to `.agent/` and `.project/` folders within the root.
-- **Consequences**: Enhanced context persistence and repository portability.
+## ADR-002: Coordinate System Mapping
+**Decision**: Standardize on Y-up for Viewport (Three.js) and Z-up for Export (OpenSCAD/3D Printing).
+**Rationale**: Ensures compatibility with industry-standard 3D printing software while maintaining standard web-based 3D visualization.
 
-## ADR 003: Gemini 3 AI Integration
-- **Context**: Needed a powerful, structured command generator.
-- **Decision**: Switched to `gemini-3-flash-preview` for low latency and high instruction adherence.
-- **Consequences**: Reliable generation of complex JSON command arrays.
+## ADR-003: Granular Viewport Memoization
+**Decision**: Use memoized `NodeRenderer` components with individual store subscriptions.
+**Rationale**: React-three-fiber performance degrades linearly with object count if the entire scene graph rerenders. Granular subscriptions isolate updates to modified nodes only.
 
-## ADR 004: Parametric Geometry with OpenSCAD
-- **Context**: Required industrial-grade STL output.
-- **Decision**: Used OpenSCAD as the geometric kernel, mapping Three.js coordinates (Y-up) to OpenSCAD coordinates (Z-up).
-- **Consequences**: High-fidelity 3D printable output for robotic parts.
+## ADR-004: State-Driven Bounding Box Caching
+**Decision**: Store bounding boxes in the `SceneNode` object and invalidate on transform/param change.
+**Rationale**: Assembly logic (Snap, Align) is computation-heavy. Caching bounds avoids repeated DOM/mesh-based calculations during rapid editing.
+
+## ADR-005: Dirty Tracking for Autosave
+**Decision**: Implement `isDirty` flag in Zustand and use a debounced 3s save loop.
+**Rationale**: Prevents redundant HTTP requests to the SQLite backend while ensuring that no more than 3 seconds of work is lost in case of failure.
